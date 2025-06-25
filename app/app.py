@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-DATABASE = os.path.join("database", "app.sqlite")
+DATABASE = "/tmp/tareas.db"
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
