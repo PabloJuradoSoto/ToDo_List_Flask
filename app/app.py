@@ -4,16 +4,12 @@ import os
 
 app = Flask(__name__)
 
-DATABASE = "/tmp/tareas.db"
+DATABASE = os.path.join("database", "app.sqlite")
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
-
-@app.route('/hello')
-def hello():
-    return 'Hello, World!'
 
 @app.route('/')
 def index():
@@ -57,4 +53,6 @@ if __name__ == "__main__":
                      ''')
         conn.close()
     app.register_error_handler(404, pagina_no_encontrada)
-    app.run(debug=True, port=5000)
+    #app.run(debug=True)
+    port = int(os.environ.get('PORT', 4000))
+    app.run(host='0.0.0.0', port=port)
