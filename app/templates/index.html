@@ -14,12 +14,16 @@
 
 <h2>Lista de tareas</h2>
 <section>
-{% for user in users%}
-<article>
-    <h3>{{loop.index}}. {{user.task_name}} - {{user.task_description}}</h3>
-    <p><a href="{{url_for('delete_task', id=user['id'])}}">Eliminar</a></p>
-    <p><a href="{{url_for('edit_task', id=user['id'])}}">Editar</a></p>
-</article>
-{% endfor %}
+    {% for user in users%}
+    <article>
+        <h3>{{loop.index}}. {{user.task_name}} - {{user.task_description}}</h3>
+        <form method="POST" action="{{url_for('delete_task', id=user['id'])}}">
+            <button type="submit">Eliminar</button>
+        </form>
+        <form action="{{url_for('edit_task', id=user['id'])}}">
+            <button type="submit">Editar</button>
+        </form>
+    </article>
+    {% endfor %}
 </section>
 {% endblock %}

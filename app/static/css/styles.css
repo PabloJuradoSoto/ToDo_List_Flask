@@ -36,8 +36,10 @@ p {
 }
 
 a {
+    display: block;
     color: darkblue;
     text-decoration: none;
+    text-align: center;
 }
 
 form {

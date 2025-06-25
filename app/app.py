@@ -14,21 +14,24 @@ def get_db_connection():
 @app.route('/')
 def index():
     conn = get_db_connection()
-    rows = conn.execute('SELECT * FROM users').fetchall()
+    tasks = conn.execute('SELECT * FROM users').fetchall()
     conn.close()
-    return render_template('index.html', users=rows)
+    return render_template('index.html', users=tasks)
 
 @app.route('/add', methods=['POST'])
 def add_task():
     task_name = request.form['task_name']
     task_description = request.form['task_description']
+    if not task_name.strip() or not task_description.strip():
+        return redirect(url_for('index'))
+    
     conn = get_db_connection()
     conn.execute('INSERT INTO users (task_name, task_description) VALUES (?, ?)', (task_name, task_description))
     conn.commit()
     conn.close()
     return redirect(url_for('index'))
 
-@app.route('/delete/<int:id>', methods=['GET','POST'])
+@app.route('/delete/<int:id>', methods=['POST'])
 def delete_task(id):
     conn = get_db_connection()
     conn.execute('DELETE FROM users WHERE id = ?', (id,))
@@ -54,8 +57,9 @@ def edit_task(id):
         conn.close()
         return render_template('edit.html', task=task)
 
+@app.errorhandler(404)
 def pagina_no_encontrada(error):
-    return redirect(url_for('index'))
+    return render_template('404.html'), 404
 
 if __name__ == "__main__":
     if not os.path.exists('database'):
