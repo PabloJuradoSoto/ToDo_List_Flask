@@ -6,3 +6,42 @@ h1 {
     color: darkblue;
     text-align: center;
 }
+
+h2 {
+    color: darkgreen;
+    text-align: center;
+}
+
+h3 {
+    color: darkred;
+    text-align: center;
+}
+
+section {
+    margin: 30px;
+    padding: 10px;
+    border: 2px solid darkblue;
+    border-radius: 5px;
+}
+
+article {
+    margin-top: 10px;
+    border: 2px solid darkblue;
+    border-radius: 5px;
+}
+p {
+    color: darkblue;
+    text-align: right;
+    padding-right: 10px;
+}
+
+a {
+    color: darkblue;
+    text-decoration: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

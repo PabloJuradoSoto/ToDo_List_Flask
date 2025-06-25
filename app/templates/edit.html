@@ -1,0 +1,15 @@
+{% extends './layout.html' %}
+
+{% block title %}To-Do List{% endblock %}
+
+{% block body %}
+<h1>To-Do List</h1>
+
+<h3>Tu tarea es: {{ task.id }}</h3>
+
+<form method="POST" action="{{url_for('edit_task', id=task.id)}}">
+    <input type="text" name="task_name" placeholder="Introduce el nombre de la tarea" required value="{{ task.task_name }}">
+    <input type="text" name="task_description" placeholder="Introduce su descripción" required value="{{ task.task_description }}">
+    <button type="submit">Actualizar Tarea</button>
+</form>
+{% endblock %}

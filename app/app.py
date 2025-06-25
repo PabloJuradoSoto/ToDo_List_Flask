@@ -4,16 +4,12 @@ import os
 
 app = Flask(__name__)
 
-DATABASE = os.path.join("/tmp", "app.sqlite")
+DATABASE = os.path.join("database", "app.sqlite")
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
-
-@app.route('/hello/')
-def hello():
-    return 'Hello, World!'
 
 @app.route('/')
 def index():
@@ -32,13 +28,31 @@ def add_task():
     conn.close()
     return redirect(url_for('index'))
 
-@app.route('/delete/<int:id>', methods=['POST'])
+@app.route('/delete/<int:id>', methods=['GET','POST'])
 def delete_task(id):
     conn = get_db_connection()
     conn.execute('DELETE FROM users WHERE id = ?', (id,))
     conn.commit()
     conn.close()
     return redirect(url_for('index'))
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit_task(id):
+    if request.method == 'POST':
+        task_name = request.form['task_name']
+        task_description = request.form['task_description']
+        conn = get_db_connection()
+        conn.execute('UPDATE users SET task_name = ?, task_description = ? WHERE id = ?',
+        (task_name, task_description, id)
+        )
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+    else:
+        conn = get_db_connection()
+        task = conn.execute('SELECT * FROM users WHERE id = ?', (id,)).fetchone()
+        conn.close()
+        return render_template('edit.html', task=task)
 
 def pagina_no_encontrada(error):
     return redirect(url_for('index'))
@@ -57,6 +71,4 @@ if __name__ == "__main__":
                      ''')
         conn.close()
     app.register_error_handler(404, pagina_no_encontrada)
-    #app.run(debug=True)
-    port = int(os.environ.get('PORT', 4000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True, port=5000)
