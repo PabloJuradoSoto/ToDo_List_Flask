@@ -1,0 +1,17 @@
+{% extends './layout.html' %}
+
+{% block title %}To-Do List{% endblock %}
+
+{% block body %}
+<h1>To-Do List</h1>
+
+<h2>Lista de tareas</h2>
+{% for user in users%}
+<h3>{{user.id}}. {{user.task_name}} - {{user.task_description}}<h3>
+{% endfor %}
+
+<form method="POST" action="{{url_for('add_task')}}">
+    <input type="text" name="task_name" placeholder="Introduce el nombre de la tarea" required>
+    <input type="text" name="task_description" placeholder="Introduce su descripción" required>
+    <button type="submit">Add Task</button>
+{% endblock %}
